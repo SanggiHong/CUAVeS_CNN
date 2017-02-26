@@ -52,24 +52,30 @@ sys.stdout.write('┌───────────┬───────�
 sys.stdout.write('│Loaded(hit)│Unloaded(hit)│Noise(hit)│Loaded(miss)│Unloaded(miss)│Noise(miss)│\n')
 sys.stdout.write('├───────────┼─────────────┼──────────┼────────────┼──────────────┼───────────┤\n')
 for i in range(len(x_data)):
-    if (prob_load[i] > 0.5):
+    if (prob_load[i] > 0.3):
         result.append([1])
         if (y_data[i] == 1):
             loaded_hit = loaded_hit+1
-        else: 
+        elif (y_data[i] == 0):
+            noise_miss = noise_miss+1
+        elif (y_data[i] == -1):
             loaded_miss = loaded_miss+1
     elif (prob_unload[i] > 0.5):
         result.append([-1])
         if (y_data[i] == -1):
             unloaded_hit = unloaded_hit+1
+        elif (y_data[i] == 0):
+            noise_miss = noise_miss+1
         else:
-            unloaded_miss = unloaded_miss+1
+            loaded_miss = loaded_miss+1
     else:
         result.append([0])
         if (y_data[i] == 0):
             noise_hit = noise_hit+1
+        elif (y_data[i] == 1):
+            loaded_miss = loaded_miss+1
         else:
-            noise_miss = noise_miss+1
+            unloaded_miss = unloaded_miss+1
     sys.stdout.write('│%11s│%13s│%10s│%12s│%14s│%11s│\r' %(loaded_hit, unloaded_hit, noise_hit, loaded_miss, unloaded_miss, noise_miss))
     time.sleep(0.0005)
 
